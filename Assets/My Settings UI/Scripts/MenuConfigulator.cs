@@ -3,61 +3,51 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MenuConfigulator {
-    public enum UICompTyoeName {
-        toggle, inputField, slider, squareButton
+public class MenuConfigulator : MonoBehaviour {
+
+    private MenuConfigulatorImpl menuConfig = new MenuConfigulatorImpl();
+
+    public Sample target;
+
+    public void setup() {
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.toggle,
+                       "is visible", target.gameObject.SetActive);
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.slider,
+                       "scale controller", target.changeScale);
+        //setupSample();
     }
 
-    public MenuConfigulator() {
-        add(UICompTyoeName.toggle, "toggleName", (bool flag) => {
-            MonoBehaviour.print("toggle: " + flag);
-        });
-        add(UICompTyoeName.inputField, "inputFieldName", (string str) => {
-            MonoBehaviour.print("inputField: " + str);
-        });
-        add(UICompTyoeName.slider, "sliderName", (float val) => {
-            MonoBehaviour.print("slider: " + val);
-        });
-        add(UICompTyoeName.squareButton, "sqButtonName", () => {
-            MonoBehaviour.print("sqButton: clicked!");
-        });
+    private void setupSample() {
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.toggle,
+                       "toggleName", toggleCallbackSample);
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.inputField,
+                       "inputFieldName", inputFieldCallbackSample);
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.slider,
+                       "sliderName", sliderCallbackSample);
+        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.squareButton,
+                       "sqButtonName", buttonCallbackSample);
     }
 
-    public Dictionary<string, UICompTyoeName> typeMap = new Dictionary<string, UICompTyoeName>();
-    public Dictionary<string, Action> actionVoidMap = new Dictionary<string, Action>();
-    public Dictionary<string, Action<bool>> actionBoolMap = new Dictionary<string, Action<bool>>();
-    public Dictionary<string, Action<string>> actionStringMap = new Dictionary<string, Action<string>>();
-    public Dictionary<string, Action<float>> actionFloatMap = new Dictionary<string, Action<float>>();
+    private Action<bool> toggleCallbackSample = (bool flag) => {
+        MonoBehaviour.print("toggle: " + flag);
+    };
 
-    private void add(UICompTyoeName type, string name, Action callback) {
-        if (type != UICompTyoeName.squareButton) {
-            return;
-        }
-        typeMap.Add(name, type);
-        actionVoidMap.Add(name, callback);
-    }
-    private void add(UICompTyoeName type, string name, Action<bool> callback) {
-        if (type != UICompTyoeName.toggle) {
-            return;
-        }
-        typeMap.Add(name, type);
-        actionBoolMap.Add(name, callback);
-    }
-    private void add(UICompTyoeName type, string name, Action<string> callback) {
-        if (type != UICompTyoeName.inputField) {
-            return;
-        }
-        typeMap.Add(name, type);
-        actionStringMap.Add(name, callback);
-    }
-    private void add(UICompTyoeName type, string name, Action<float> callback) {
-        if (type != UICompTyoeName.slider) {
-            return;
-        }
-        typeMap.Add(name, type);
-        actionFloatMap.Add(name, callback);
-    }
+    private Action<string> inputFieldCallbackSample = (string str) => {
+        MonoBehaviour.print("inputField: " + str);
+    };
+
+    private Action<float> sliderCallbackSample = (float val) => {
+        MonoBehaviour.print("slider: " + val);
+    };
+
+    private Action buttonCallbackSample = () => {
+        MonoBehaviour.print("sqButton: clicked!");
+    };
+
+    public Dictionary<string, MenuConfigulatorImpl.UICompTyoeName> typeMap { get { return menuConfig.typeMap; } }
+    public Dictionary<string, Action> actionVoidMap { get { return menuConfig.actionVoidMap; } }
+    public Dictionary<string, Action<bool>> actionBoolMap { get { return menuConfig.actionBoolMap; } }
+                                         public Dictionary<string, Action<string>> actionStringMap { get { return menuConfig.actionStringMap; } }
+                                         public Dictionary<string, Action<float>> actionFloatMap { get { return menuConfig.actionFloatMap; } }
 
 }
-
-

@@ -14,23 +14,29 @@ public class MenuManager : MonoBehaviour {
     public Vector2 pos = new Vector2(50, 0);
 
     private List<IMyUICompManager> uiCompMgrs = new List<IMyUICompManager>();
-    private MenuConfigulator menuConfig = new MenuConfigulator();
+    private MenuConfigulator menuConfig;
+
+    void Start() {
+        menuConfig = GetComponent<MenuConfigulator>();
+        menuConfig.setup();
+        initialize();
+        placeComps();
+    }
 
     private void initialize() {
-
         foreach (var pair in menuConfig.typeMap) {
-            if (MenuConfigulator.UICompTyoeName.toggle == pair.Value) {
+            if (MenuConfigulatorImpl.UICompTyoeName.toggle == pair.Value) {
                 uiCompMgrs.Add(new MyToggleManager(Instantiate(toggle), menuBase.transform,
                                                    pair.Key, Action2UnityAction(menuConfig.actionBoolMap[pair.Key])));
-            } else if (MenuConfigulator.UICompTyoeName.inputField == pair.Value) {
+            } else if (MenuConfigulatorImpl.UICompTyoeName.inputField == pair.Value) {
                 uiCompMgrs.Add(new MyInputFieldManager(Instantiate(inputField), menuBase.transform,
                                                        pair.Key, Action2UnityAction(menuConfig.actionStringMap[pair.Key]),
                                                        MyInputFieldManager.Empty));
-            } else if (MenuConfigulator.UICompTyoeName.slider == pair.Value) {
+            } else if (MenuConfigulatorImpl.UICompTyoeName.slider == pair.Value) {
                 uiCompMgrs.Add(new MySliderManager(Instantiate(slider), menuBase.transform,
                                                    pair.Key, Action2UnityAction(menuConfig.actionFloatMap[pair.Key])));
 
-            } else if (MenuConfigulator.UICompTyoeName.squareButton == pair.Value) {
+            } else if (MenuConfigulatorImpl.UICompTyoeName.squareButton == pair.Value) {
                 uiCompMgrs.Add(new MyButtonManager(Instantiate(squareButton), menuBase.transform,
                                                    pair.Key, Action2UnityAction(menuConfig.actionVoidMap[pair.Key])));
             }
@@ -46,10 +52,7 @@ public class MenuManager : MonoBehaviour {
         baseRectTF.sizeDelta = new Vector2(0, Mathf.Max(Mathf.Abs(pos.y + offset.y), baseRectTF.sizeDelta.y));
     }
 
-    void Start() {
-        initialize();
-        placeComps();
-    }
+
 
     static private UnityEngine.Events.UnityAction Action2UnityAction(Action action) {
         return new UnityEngine.Events.UnityAction(() => {
