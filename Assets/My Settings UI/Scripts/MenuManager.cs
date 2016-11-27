@@ -24,21 +24,24 @@ public class MenuManager : MonoBehaviour {
     }
 
     private void initialize() {
-        foreach (var pair in menuConfig.typeMap) {
-            if (MenuConfigulatorImpl.UICompTyoeName.toggle == pair.Value) {
+        foreach (var property in menuConfig.menuProperties) {
+            if (MenuConfigulatorImpl.UICompTypeName.toggle == property.type) {
                 uiCompMgrs.Add(new MyToggleManager(Instantiate(toggle), menuBase.transform,
-                                                   pair.Key, Action2UnityAction(menuConfig.actionBoolMap[pair.Key])));
-            } else if (MenuConfigulatorImpl.UICompTyoeName.inputField == pair.Value) {
+                                                   property.label, Action2UnityAction(property.callbackBool),
+                                                   property.initBool));
+            } else if (MenuConfigulatorImpl.UICompTypeName.inputField == property.type) {
                 uiCompMgrs.Add(new MyInputFieldManager(Instantiate(inputField), menuBase.transform,
-                                                       pair.Key, Action2UnityAction(menuConfig.actionStringMap[pair.Key]),
-                                                       MyInputFieldManager.Empty));
-            } else if (MenuConfigulatorImpl.UICompTyoeName.slider == pair.Value) {
+                                                       property.label, Action2UnityAction(property.callbackStr),
+                                                       MyInputFieldManager.Empty,
+                                                       property.initStr));
+            } else if (MenuConfigulatorImpl.UICompTypeName.slider == property.type) {
                 uiCompMgrs.Add(new MySliderManager(Instantiate(slider), menuBase.transform,
-                                                   pair.Key, Action2UnityAction(menuConfig.actionFloatMap[pair.Key])));
+                                                   property.label, Action2UnityAction(property.callbackFloat),
+                                                   property.initFloat, property.minVal, property.maxVal));
 
-            } else if (MenuConfigulatorImpl.UICompTyoeName.squareButton == pair.Value) {
+            } else if (MenuConfigulatorImpl.UICompTypeName.squareButton == property.type) {
                 uiCompMgrs.Add(new MyButtonManager(Instantiate(squareButton), menuBase.transform,
-                                                   pair.Key, Action2UnityAction(menuConfig.actionVoidMap[pair.Key])));
+                                                   property.label, Action2UnityAction(property.callbackVoid)));
             }
         }
     }

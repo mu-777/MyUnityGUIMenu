@@ -10,21 +10,23 @@ public class MenuConfigulator : MonoBehaviour {
     public Sample target;
 
     public void setup() {
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.toggle,
-                       "is visible", target.gameObject.SetActive);
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.slider,
-                       "scale controller", target.changeScale);
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.toggle,
+                       "is visible", target.gameObject.SetActive,
+                       true);
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.slider,
+                       "scale controller", target.changeScale,
+                       1, 0, 10);
         //setupSample();
     }
 
     private void setupSample() {
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.toggle,
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.toggle,
                        "toggleName", toggleCallbackSample);
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.inputField,
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.inputField,
                        "inputFieldName", inputFieldCallbackSample);
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.slider,
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.slider,
                        "sliderName", sliderCallbackSample);
-        menuConfig.add(MenuConfigulatorImpl.UICompTyoeName.squareButton,
+        menuConfig.Add(MenuConfigulatorImpl.UICompTypeName.squareButton,
                        "sqButtonName", buttonCallbackSample);
     }
 
@@ -44,10 +46,5 @@ public class MenuConfigulator : MonoBehaviour {
         MonoBehaviour.print("sqButton: clicked!");
     };
 
-    public Dictionary<string, MenuConfigulatorImpl.UICompTyoeName> typeMap { get { return menuConfig.typeMap; } }
-    public Dictionary<string, Action> actionVoidMap { get { return menuConfig.actionVoidMap; } }
-    public Dictionary<string, Action<bool>> actionBoolMap { get { return menuConfig.actionBoolMap; } }
-                                         public Dictionary<string, Action<string>> actionStringMap { get { return menuConfig.actionStringMap; } }
-                                         public Dictionary<string, Action<float>> actionFloatMap { get { return menuConfig.actionFloatMap; } }
-
+    public List<MenuConfigulatorImpl.MenuProperty> menuProperties { get { return menuConfig.menuProperties; } }
 }

@@ -47,9 +47,11 @@ public class MyToggleManager : MyUICompManagerBase {
     public static UnityEngine.Events.UnityAction<bool> Empty = (flag) => { };
 
     public MyToggleManager(UnityEngine.UI.Toggle toggle, Transform parent, string label,
-                           UnityEngine.Events.UnityAction<bool> onValueChanged)
+                           UnityEngine.Events.UnityAction<bool> onValueChanged,
+                           bool initVal = false)
         : base(toggle.gameObject, parent, label) {
         toggle.onValueChanged.AddListener(onValueChanged);
+        toggle.isOn = initVal;
     }
 }
 
@@ -58,10 +60,12 @@ public class MyInputFieldManager : MyUICompManagerBase {
 
     public MyInputFieldManager(UnityEngine.UI.InputField inputField, Transform parent, string label,
                                UnityEngine.Events.UnityAction<string> onEndEdit,
-                               UnityEngine.Events.UnityAction<string> onValueChanged)
+                               UnityEngine.Events.UnityAction<string> onValueChanged,
+                               string initVal = "")
         : base(inputField.gameObject, parent, label) {
         inputField.onEndEdit.AddListener(onEndEdit);
         inputField.onValueChanged.AddListener(onValueChanged);
+        inputField.text = initVal;
     }
 }
 
@@ -69,9 +73,13 @@ public class MySliderManager : MyUICompManagerBase {
     public static UnityEngine.Events.UnityAction<float> Empty = (single) => { };
 
     public MySliderManager(UnityEngine.UI.Slider slider, Transform parent, string label,
-                           UnityEngine.Events.UnityAction<float> onValueChanged)
+                           UnityEngine.Events.UnityAction<float> onValueChanged,
+                           float initVal = 50, float minVal = 0, float maxVal = 100)
         : base(slider.gameObject, parent, label) {
         slider.onValueChanged.AddListener(onValueChanged);
+        slider.value = initVal;
+        slider.maxValue = maxVal;
+        slider.minValue = minVal;
     }
 }
 
